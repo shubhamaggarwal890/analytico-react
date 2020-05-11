@@ -1,7 +1,7 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Analytico-react
+Analytico is user input based data analysis tool over various social media platforms. Analytico-react tends to bring in a web interactive dashboard to the user.
 
 ## Available Scripts
-
 In the project directory, you can run:
 
 ### `yarn start`
