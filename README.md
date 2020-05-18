@@ -4,6 +4,10 @@ Analytico is user input based data analysis tool over various social media platf
 ## Available Scripts
 In the project directory, you can run:
 
+### `yarn install`
+
+Installs the dependent module used in the app.<br />
+
 ### `yarn start`
 
 Runs the app in the development mode.<br />
