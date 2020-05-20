@@ -1,4 +1,3 @@
-/*global FB*/
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
@@ -9,6 +8,18 @@ import {
 } from '@material-ui/core';
 import { Facebook as FacebookIcon } from './../../icons';
 import { PageName, Analysis } from './components';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import Backdrop from '@material-ui/core/Backdrop';
+import axios from 'axios';
+import { connect } from 'react-redux';
+
+
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 
 class Facebook extends React.Component {
 
@@ -21,30 +32,30 @@ class Facebook extends React.Component {
   }
 
   state = {
-    page_name: ''
-  }
-
-  handlePageChange = (event) => {
-    this.setState({
-      ...this.state,
-      page_name: event.target.value
-    })
+    page_name: '',
+    name: '',
+    email: '',
+    sentimental: true,
+    question: false,
+    hashtag: true,
+    token: null,
+    snackbar: false,
+    error_snackbar: false,
+    progress: false
   }
 
   componentDidMount() {
     window.fbAsyncInit = function () {
-      FB.init({
+      window.FB.init({
         appId: '862008614311891',
         cookie: true,
         xfbml: true,
         version: 'v3.1'
       });
-      FB.AppEvents.logPageView();
-      FB.Event.subscribe('auth.statusChange', function (response) {
+      window.FB.AppEvents.logPageView();
+      window.FB.Event.subscribe('auth.statusChange', function (response) {
         if (response.authResponse) {
           this.checkLoginState();
-        } else {
-          console.log('---->User cancelled login or did not fully authorize.');
         }
       }.bind(this));
     }.bind(this);
@@ -60,12 +71,14 @@ class Facebook extends React.Component {
   }
 
   testAPI = () => {
-    console.log('Welcome! Fetching your information.... ');
-    FB.api('/me', function (response) {
-      console.log('Successful login for: ' + response.name);
+    window.FB.api('/me', 'GET', { "fields": "name,email" }, function (response) {
       document.getElementById('status').innerHTML =
         'Thanks for logging in, ' + response.name + '!';
-    });
+      this.setState({
+        name: response.name,
+        email: response.email,
+      })
+    }.bind(this));
   }
 
   statusChangeCallback = (response) => {
@@ -85,23 +98,100 @@ class Facebook extends React.Component {
   }
 
   checkLoginState = () => {
-    FB.getLoginStatus(function (response) {
+    window.FB.getLoginStatus(function (response) {
       this.statusChangeCallback(response);
-      console.log(response);
+      if (response.authResponse) {
+        this.setState({
+          token: response.authResponse.accessToken
+        })
+      }
     }.bind(this));
   }
 
   handleClick = () => {
-    FB.login(this.checkLoginState());
+    if (!window.FB) {
+      document.getElementById('status').innerHTML = 'We do not entertain request in incognito.';
+    } else {
+      window.FB.login(this.checkLoginState());
+    }
   }
 
-  facebookResponse = (response) => {
-    console.log(response);
+  handlePageChange = (event) => {
+    this.setState({
+      ...this.state,
+      page_name: event.target.value
+    })
+  }
+
+  handleCheckBoxChange = (event) => {
+    this.setState({
+      [event.target.name]: event.target.checked
+    })
+
+  }
+
+  handleCloseSnackBar = () => {
+    this.setState({
+      ...this.state,
+      snackbar: false,
+      error_snackbar: false
+    })
+  }
+
+
+  saveFacebookAnalysis = () => {
+    this.setState({
+      progress: true
+    })
+    console.log({
+      user_id: this.props.id,
+      token: this.state.token,
+      email: this.state.email,
+      name: this.state.name,
+      page: this.state.page_name.length > 0 ? this.state.page_name : null,
+      analyzer: {
+        sentimental: this.state.sentimental,
+        question: this.state.question,
+        hashtags: this.state.hashtag,
+        followers: true
+      }
+    });
+    axios.post('/facebook_analysis', {
+      user_id: this.props.id,
+      token: this.state.token,
+      email: this.state.email,
+      name: this.state.name,
+      page: this.state.page_name.length > 0 ? this.state.page_name : null,
+      analyzer: {
+        sentimental: this.state.sentimental,
+        question: this.state.question,
+        hashtags: this.state.hashtag,
+        followers: true
+      }
+    }).then(response => {
+      this.setState({
+        page_name: '',
+        name: '',
+        email: '',
+        sentimental: true,
+        question: false,
+        hashtag: true,
+        token: null,
+        snackbar: true,
+        error_snackbar: false,
+        progress: false
+      })
+    }).catch(error => {
+      this.setState({
+        error_snackbar: true,
+        progress: false
+      })
+    })
   }
 
   render() {
     return (
-      <div style={{ height: '100%' }}>
+      <div>
         <Grid container style={{ height: '100%' }}>
           <Grid item lg={7} xs={12} style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
             <div style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -150,17 +240,33 @@ class Facebook extends React.Component {
             md={5}
             xs={12}
           >
-            <PageName />
+            <PageName handlePageChange={this.handlePageChange} page_name={this.state.page_name} />
           </Grid>
           <Grid
             item
             md={7}
             xs={12}
           >
-            <Analysis />
+            <Analysis handleCheckBoxChange={this.handleCheckBoxChange}
+              analyze={(this.state.sentimental || this.state.hastag || this.state.question) && this.state.token != null}
+              saveFacebookAnalysis={this.saveFacebookAnalysis}
+            />
           </Grid>
-
         </Grid>
+        <Backdrop style={{ zIndex: '300', color: '#000' }} open={this.state.progress}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+        <Snackbar open={this.state.snackbar} autoHideDuration={3000} onClose={this.handleCloseSnackBar}>
+          <Alert onClose={this.handleCloseSnackBar} severity="success">
+            Data successfully stored, we'll start with analysis on your facebook data
+          </Alert>
+        </Snackbar>
+        <Snackbar open={this.state.error_snackbar} autoHideDuration={3000} onClose={this.handleCloseSnackBar}>
+          <Alert onClose={this.handleCloseSnackBar} severity="error">
+            Oh No, You shouldn't have seen this, analysis couldn't start, Please try again.
+          </Alert>
+        </Snackbar>
+
       </div>
 
     )
@@ -171,4 +277,10 @@ Facebook.propTypes = {
   history: PropTypes.object
 };
 
-export default withRouter(Facebook);
+const mapStateToProps = state => {
+  return {
+    id: state.user.id,
+  };
+}
+
+export default connect(mapStateToProps)(withRouter(Facebook));

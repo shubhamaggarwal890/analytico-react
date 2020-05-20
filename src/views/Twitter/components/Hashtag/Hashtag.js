@@ -1,7 +1,4 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/styles';
+import React from 'react';
 import {
   Card,
   CardHeader,
@@ -10,32 +7,10 @@ import {
   TextField
 } from '@material-ui/core';
 
-const useStyles = makeStyles(() => ({
-  root: {}
-}));
-
 const Hashtag = props => {
-  const { className, ...rest } = props;
-
-  const classes = useStyles();
-
-  const [values, setValues] = useState({
-    name: '',
-    hashtag: ''
-  });
-
-  const handleChange = event => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
 
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
+    <Card>
       <form>
         <CardHeader
           subheader="Twitter user information"
@@ -47,17 +22,17 @@ const Hashtag = props => {
             fullWidth
             label="Screen Name"
             name="name"
-            onChange={handleChange}
-            value={values.name}
+            onChange={props.handleTextChange}
+            value={props.screen_name}
             variant="outlined"
           />
           <TextField
             fullWidth
             label="Hashtags"
             name="hashtag"
-            onChange={handleChange}
+            onChange={props.handleTextChange}
             style={{ marginTop: '1rem' }}
-            value={values.hashtag}
+            value={props.hashtag_data}
             variant="outlined"
           />
         </CardContent>
@@ -65,10 +40,6 @@ const Hashtag = props => {
       </form>
     </Card>
   );
-};
-
-Hashtag.propTypes = {
-  className: PropTypes.string
 };
 
 export default Hashtag;

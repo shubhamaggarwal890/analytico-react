@@ -1,6 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
 import { makeStyles } from '@material-ui/styles';
 import {
   Card,
@@ -24,15 +22,10 @@ const useStyles = makeStyles(() => ({
 }));
 
 const Tweet = props => {
-  const { className, ...rest } = props;
-
   const classes = useStyles();
 
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
+    <Card>
       <form>
         <CardHeader
           subheader="Analyze twitter data"
@@ -48,43 +41,7 @@ const Tweet = props => {
             <Grid
               className={classes.item}
               item
-              md={4}
-              sm={6}
-              xs={12}
-            >
-              <Typography
-                gutterBottom
-                variant="h6"
-              >
-                Twitter Data
-              </Typography>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked //
-                  />
-                }
-                label="Timeline"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked //
-                  />
-                }
-                label="User Information"
-              />
-              <FormControlLabel
-                control={<Checkbox color="primary" />}
-                label="Followers"
-              />
-            </Grid>
-            <Grid
-              className={classes.item}
-              item
-              md={4}
+              md={6}
               sm={6}
               xs={12}
             >
@@ -98,43 +55,71 @@ const Tweet = props => {
                 control={
                   <Checkbox
                     color="primary"
-                    defaultChecked //
+                    defaultChecked
+                    name="sentimental"
+                    onChange={props.handleCheckBoxChange}
                   />
                 }
                 label="Sentiments"
               />
               <FormControlLabel
-                control={<Checkbox color="primary" />}
-                label="Question/Statement"
+                control={
+                  <Checkbox color="primary"
+                    name="question"
+                    onChange={props.handleCheckBoxChange}
+                  />
+                }
+                label="Question Detection"
+
               />
               <FormControlLabel
                 control={
                   <Checkbox
                     color="primary"
-                    defaultChecked //
+                    defaultChecked
+                    name="news"
+                    onChange={props.handleCheckBoxChange}
                   />
                 }
-                label="Usage Count"
+                label="Fact Check"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color="primary"
+                    name="hashtag"
+                    onChange={props.handleCheckBoxChange}
+                  />
+                }
+                label="Monitor Hashtags"
               />
             </Grid>
           </Grid>
         </CardContent>
         <Divider />
         <CardActions>
-          <Button
-            color="primary"
-            variant="outlined"
-          >
-            Analyze
+          {
+            props.analyze ?
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={props.saveTwitterAnalysis}
+              >
+                Analyze
+          </Button> :
+              <Button
+                color="primary"
+                variant="outlined"
+                disabled
+              >
+                Analyze
           </Button>
+          }
         </CardActions>
       </form>
     </Card>
   );
 };
 
-Tweet.propTypes = {
-  className: PropTypes.string
-};
 
 export default Tweet;
