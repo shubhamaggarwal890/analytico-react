@@ -1,7 +1,4 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/styles';
+import React from 'react';
 import {
   Card,
   CardHeader,
@@ -10,31 +7,10 @@ import {
   TextField
 } from '@material-ui/core';
 
-const useStyles = makeStyles(() => ({
-  root: {}
-}));
-
 const PageName = props => {
-  const { className, ...rest } = props;
-
-  const classes = useStyles();
-
-  const [values, setValues] = useState({
-    page_name: '',
-  });
-
-  const handleChange = event => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
 
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
+    <Card>
       <form>
         <CardHeader
           subheader="Page Name"
@@ -46,8 +22,8 @@ const PageName = props => {
             fullWidth
             label="Page Name"
             name="page_name"
-            onChange={handleChange}
-            value={values.page_name}
+            onChange={props.handlePageChange}
+            value={props.page_name}
             variant="outlined"
           />
         </CardContent>
@@ -55,10 +31,6 @@ const PageName = props => {
       </form>
     </Card>
   );
-};
-
-PageName.propTypes = {
-  className: PropTypes.string
 };
 
 export default PageName;

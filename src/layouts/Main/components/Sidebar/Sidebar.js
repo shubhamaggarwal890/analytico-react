@@ -6,7 +6,7 @@ import { Divider, Drawer } from '@material-ui/core';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import FacebookIcon from '@material-ui/icons/Facebook';
 import TwitterIcon from '@material-ui/icons/Twitter';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
+// import LinkedInIcon from '@material-ui/icons/LinkedIn';
 import RedditIcon from '@material-ui/icons/Reddit';
 import { Profile, SidebarNav } from './components';
 
@@ -52,11 +52,11 @@ const Sidebar = props => {
       title: 'Twitter',
       href: '/twitter',
       icon: <TwitterIcon />
-    },
-    {
-      title: 'LinkedIn',
-      href: '/linkedin',
-      icon: <LinkedInIcon />
+    // },
+    // {
+    //   title: 'LinkedIn',
+    //   href: '/linkedin',
+    //   icon: <LinkedInIcon />
     },
     {
       title: 'Reddit',
