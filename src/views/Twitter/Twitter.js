@@ -46,10 +46,10 @@ const Twitter = (props) => {
   }
 
   const handleCheckBoxChange = (event) => {
-    setAnalysis(analysis => ({
+    setAnalysis({
       ...analysis,
-      [event.target.name]: event.target.checked,
-    }))
+      [event.target.name]: event.target.checked
+    })
   }
 
   const handleTextChange = (event) => {
@@ -80,7 +80,8 @@ const Twitter = (props) => {
         hashtags: analysis.hashtag,
         followers: true,
         news: analysis.news
-      }})
+      }
+    })
 
     axios.post('/twitter_analysis', {
       user_id: props.id,
@@ -96,7 +97,7 @@ const Twitter = (props) => {
     }).then(response => {
       setSnackBar(snackbar => ({
         ...snackbar,
-        error: true
+        success: true
       }))
       setAnalysis(analysis => ({
         sentimental: true,

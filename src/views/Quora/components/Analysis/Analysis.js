@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
   }
 }));
 
-const Tweet = props => {
+const Analysis = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -63,42 +63,40 @@ const Tweet = props => {
                   <Checkbox
                     color="primary"
                     defaultChecked //
+                    name="sentimental"
+                    onChange={props.handleCheckBoxChange}
+
                   />
                 }
                 label="Sentiments"
-              />
-              <FormControlLabel
-                control={<Checkbox color="primary" />}
-                label="Question/Statement"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked //
-                  />
-                }
-                label="Usage Counts"
               />
             </Grid>
           </Grid>
         </CardContent>
         <Divider />
         <CardActions>
-          <Button
-            color="primary"
-            variant="outlined"
-          >
-            Analyze
+          {
+            props.analyze ?
+              <Button
+                color="primary"
+                variant="outlined"
+                onClick={props.saveQuoraAnalysis}
+              >
+                Analyze
+          </Button> :
+              <Button
+                color="primary"
+                variant="outlined"
+                disabled
+              >
+                Analyze
           </Button>
+          }
+
         </CardActions>
       </form>
     </Card>
   );
 };
 
-Tweet.propTypes = {
-  className: PropTypes.string
-};
-
-export default Tweet;
+export default Analysis;

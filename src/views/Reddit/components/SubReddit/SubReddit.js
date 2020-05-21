@@ -1,7 +1,4 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import clsx from 'clsx';
-import { makeStyles } from '@material-ui/styles';
+import React from 'react';
 import {
   Card,
   CardHeader,
@@ -10,31 +7,9 @@ import {
   TextField
 } from '@material-ui/core';
 
-const useStyles = makeStyles(() => ({
-  root: {}
-}));
-
 const SubReddit = props => {
-  const { className, ...rest } = props;
-
-  const classes = useStyles();
-
-  const [values, setValues] = useState({
-    name: ''
-  });
-
-  const handleChange = event => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value
-    });
-  };
-
   return (
-    <Card
-      {...rest}
-      className={clsx(classes.root, className)}
-    >
+    <Card>
       <form>
         <CardHeader
           subheader="Reddit information"
@@ -46,8 +21,8 @@ const SubReddit = props => {
             fullWidth
             label="SubReddit - MachineLearning/Python etc.."
             name="name"
-            onChange={handleChange}
-            value={values.name}
+            onChange={props.handleTextChange}
+            value={props.subreddit}
             variant="outlined"
           />
         </CardContent>
@@ -55,10 +30,6 @@ const SubReddit = props => {
       </form>
     </Card>
   );
-};
-
-SubReddit.propTypes = {
-  className: PropTypes.string
 };
 
 export default SubReddit;
