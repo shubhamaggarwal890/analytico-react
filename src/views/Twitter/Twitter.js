@@ -70,18 +70,6 @@ const Twitter = (props) => {
         })
       })
     }
-    console.log({
-      user_id: props.id,
-      screen_name: screen_name.length > 0 ? screen_name : null,
-      hashtags: hashtags,
-      analyzer: {
-        sentimental: analysis.sentimental,
-        question: analysis.question,
-        hashtags: analysis.hashtag,
-        followers: true,
-        news: analysis.news
-      }
-    })
 
     axios.post('/twitter_analysis', {
       user_id: props.id,
@@ -95,6 +83,7 @@ const Twitter = (props) => {
         news: analysis.news
       }
     }).then(response => {
+      console.log(response);
       setSnackBar(snackbar => ({
         ...snackbar,
         success: true
@@ -107,13 +96,16 @@ const Twitter = (props) => {
       }))
       setScreenName("");
       setHashtagData("");
+      setProgress(false);
     }).catch(error => {
+      console.log(error);
       setSnackBar(snackbar => ({
         ...snackbar,
         error: true
       }))
+      setProgress(false);
+
     })
-    setProgress(false);
   }
 
   return (
