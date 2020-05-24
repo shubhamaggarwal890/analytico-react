@@ -66,10 +66,10 @@ const Reddit = (props) => {
       analyzer: {
         sentimental: analysis.sentimental,
         question: analysis.question,
-        hashtags: analysis.hashtag,
+        hashtags: false,
         followers: false,
-        news: analysis.news,
-        comments: analysis.comments
+        news: false,
+        comments: true
       }
     })
 
@@ -79,15 +79,15 @@ const Reddit = (props) => {
       analyzer: {
         sentimental: analysis.sentimental,
         question: analysis.question,
-        hashtags: analysis.hashtag,
+        hashtags: false,
         followers: false,
-        news: analysis.news,
-        comments: analysis.comments
+        news: false,
+        comments: true
       }
     }).then(response => {
       setSnackBar(snackbar => ({
         ...snackbar,
-        error: true
+        success: true
       }))
       setAnalysis(analysis => ({
         sentimental: true,
@@ -131,7 +131,7 @@ const Reddit = (props) => {
         </Grid>
 
       </Grid>
-      <Backdrop style={{ zIndex: '300', color: '#000' }} open={progress}>
+      <Backdrop style={{ zIndex: '300' }} open={progress}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Snackbar open={snackbar.success} autoHideDuration={3000} onClose={handleCloseSnackBar}>

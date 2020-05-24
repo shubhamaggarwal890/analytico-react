@@ -83,16 +83,6 @@ const Tweet = props => {
                 }
                 label="Fact Check"
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    name="hashtag"
-                    onChange={props.handleCheckBoxChange}
-                  />
-                }
-                label="Monitor Hashtags"
-              />
             </Grid>
           </Grid>
         </CardContent>

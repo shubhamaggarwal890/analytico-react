@@ -78,7 +78,7 @@ const Twitter = (props) => {
       analyzer: {
         sentimental: analysis.sentimental,
         question: analysis.question,
-        hashtags: analysis.hashtag,
+        hashtags: true,
         followers: true,
         news: analysis.news
       }
@@ -132,7 +132,7 @@ const Twitter = (props) => {
           } saveTwitterAnalysis={saveTwitterAnalysis} />
         </Grid>
       </Grid>
-      <Backdrop style={{ zIndex: '300', color: '#000' }} open={progress}>
+      <Backdrop style={{ zIndex: '300' }} open={progress}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Snackbar open={snackbar.success} autoHideDuration={3000} onClose={handleCloseSnackBar}>

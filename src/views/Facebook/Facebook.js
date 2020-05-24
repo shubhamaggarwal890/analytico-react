@@ -165,7 +165,7 @@ class Facebook extends React.Component {
       analyzer: {
         sentimental: this.state.sentimental,
         question: this.state.question,
-        hashtags: this.state.hashtag,
+        hashtags: true,
         followers: true
       }
     }).then(response => {
@@ -253,7 +253,7 @@ class Facebook extends React.Component {
             />
           </Grid>
         </Grid>
-        <Backdrop style={{ zIndex: '300', color: '#000' }} open={this.state.progress}>
+        <Backdrop style={{ zIndex: '300'}} open={this.state.progress}>
           <CircularProgress color="inherit" />
         </Backdrop>
         <Snackbar open={this.state.snackbar} autoHideDuration={3000} onClose={this.handleCloseSnackBar}>

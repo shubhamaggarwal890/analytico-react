@@ -72,27 +72,6 @@ const Analysis = props => {
                   />}
                 label="Question Detection"
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    name="comments"
-                    onChange={props.handleCheckBoxChange}
-                    defaultChecked
-                  />
-                }
-                label="Analyze Comments"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    name="news"
-                    onChange={props.handleCheckBoxChange}
-                  />
-                }
-                label="Fact Check"
-              />
 
             </Grid>
           </Grid>

@@ -7,6 +7,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import HashtagChart from './../HashtagChart'
+import Sentiments from './../S_Doughnut';
 
 
 function Alert(props) {
@@ -21,19 +23,67 @@ class QuoraAnalysis extends Component {
         axios.post('/get_quora_analysis', {
             user_id: this.props.id,
         }).then(response => {
+            console.log(response);
+            if (response.data.message) {
+                this.setState({
+                    message: response.data.message,
+                    error_snackbar: true
+                })
+            }
             this.setState({
-                progress: false
+                query: response.data.query,
+                questions_count: response.data.question_count == null ? 0 : response.data.question_count,
+                answers_count: response.data.answer_count == null ? 0 : response.data.answer_count,
+                question: response.data.question
             })
+
+            let l = [], f = [], q_a_s = [], qu_a_s = [];
+            response.data.answers.forEach(element => {
+                l.push(element.name)
+                f.push(element.number)
+            });
+
+            if (response.data.s_positive !== 0 || response.data.s_negative !== 0 || response.data.s_neutral !== 0) {
+                q_a_s.push(response.data.s_positive);
+                q_a_s.push(response.data.s_neutral);
+                q_a_s.push(response.data.s_negative);
+            }
+
+            if (response.data.q_s_positive !== 0 || response.data.q_s_negative !== 0 || response.data.q_s_neutral !== 0) {
+                qu_a_s.push(response.data.q_s_positive);
+                qu_a_s.push(response.data.q_s_neutral);
+                qu_a_s.push(response.data.q_s_negative);
+            }
+
+            this.setState({
+                progress: false,
+                labels: l,
+                frequency: f,
+                q_sentiment: q_a_s,
+                qu_sentiment: qu_a_s,
+            })
+
+
         }).catch(error => {
             this.setState({
                 error_snackbar: true,
+                message: "Oh No, You shouldn't have seen this. Some error occurred please try again."
             })
         })
     }
 
     state = {
         progress: true,
-        error_snackbar: false
+        error_snackbar: false,
+        message: null,
+        query: null,
+        question: null,
+        questions_count: null,
+        answers_count: null,
+        labels: [],
+        frequency: [],
+        q_sentiment: [],
+        qu_sentiment: [],
     }
 
     handleCloseSnackBar = () => {
@@ -106,30 +156,52 @@ class QuoraAnalysis extends Component {
                     </Grid>
                     {!this.state.progress ?
                         <>
-                            <Grid
-                                item
-                                lg={8}
-                                md={12}
-                                xl={9}
-                                xs={12}
-                            >
-                                <Questions question_answer={"QUESTIONS"} />
+                            {this.state.labels.length > 0 && this.state.frequency.length > 0 ?
+                                <Grid
+                                    item
+                                    lg={8}
+                                    md={12}
+                                    xl={9}
+                                    xs={12}
+                                >
+                                    <HashtagChart labels={this.state.labels} frequency={this.state.frequency} label_title={"Answer Frequency"}
+                                        title={"Answer frequency to questions"} />
 
-                            </Grid>
-                            <Grid
-                                item
-                                lg={4}
-                                md={6}
-                                xl={3}
-                                xs={12}
-                            >
-                                <Questions question_answer={"ANSWERS"} />
-                            </Grid>
+                                </Grid>
+                                : null
+                            }
+                            {this.state.q_sentiment.length !== 0 ?
+                                <Grid
+                                    item
+                                    lg={4}
+                                    md={6}
+                                    xl={3}
+                                    xs={12}
+                                >
+                                    <Sentiments value={this.state.q_sentiment} title={"Sentiments on answer to query"} />
+
+                                </Grid>
+                                : null
+                            }
+                            {this.state.qu_sentiment.length !== 0 ?
+                                <Grid
+                                    item
+                                    lg={4}
+                                    md={6}
+                                    xl={3}
+                                    xs={12}
+                                >
+                                    <Sentiments value={this.state.qu_sentiment} title={"Sentiments on answer to question"} />
+
+                                </Grid>
+                                : null
+                            }
+
                         </> : null}
                 </Grid>
                 <Snackbar open={this.state.error_snackbar} autoHideDuration={3000} onClose={this.handleCloseSnackBar}>
                     <Alert onClose={this.handleCloseSnackBar} severity="error">
-                        Analysis still in progress, Kindly wait or come back later.
+                        {this.state.message}
                   </Alert>
                 </Snackbar>
 

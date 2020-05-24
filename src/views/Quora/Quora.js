@@ -67,19 +67,7 @@ const Quora = (props) => {
 
   const saveQuoraAnalysis = () => {
     setProgress(true);
-    console.log({
-      user_id: props.id,
-      query: values.name,
-      question: values.question,
-      analyzer: {
-        sentimental: analysis.sentimental,
-        question: analysis.question,
-        hashtags: analysis.hashtag,
-        followers: false,
-        news: analysis.news,
-        comments: analysis.comments
-      }
-    })
+    
 
     axios.post('/quora_analysis', {
       user_id: props.id,
@@ -87,16 +75,16 @@ const Quora = (props) => {
       question: values.question,
       analyzer: {
         sentimental: analysis.sentimental,
-        question: analysis.question,
-        hashtags: analysis.hashtag,
+        question: false,
+        hashtags: false,
         followers: false,
-        news: analysis.news,
-        comments: analysis.comments
+        news: false,
+        comments: false
       }
     }).then(response => {
       setSnackBar(snackbar => ({
         ...snackbar,
-        error: true
+        success: true
       }))
       setAnalysis(analysis => ({
         sentimental: true,
@@ -144,7 +132,7 @@ const Quora = (props) => {
           } saveQuoraAnalysis={saveQuoraAnalysis} />
         </Grid>
       </Grid>
-      <Backdrop style={{ zIndex: '300', color: '#000' }} open={progress}>
+      <Backdrop style={{ zIndex: '300'}} open={progress}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <Snackbar open={snackbar.success} autoHideDuration={3000} onClose={handleCloseSnackBar}>

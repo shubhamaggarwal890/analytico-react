@@ -69,18 +69,6 @@ const Analysis = props => {
                 onChange={props.handleCheckBoxChange}
 
               />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked
-                    name="hashtag"
-                    onChange={props.handleCheckBoxChange}
-
-                  />
-                }
-                label="Monitor Hashtags"
-              />
             </Grid>
           </Grid>
         </CardContent>
