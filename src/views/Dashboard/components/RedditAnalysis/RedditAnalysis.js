@@ -66,7 +66,6 @@ class RedditAnalysis extends Component {
                 p_s_t.push(response.data.s_negative);
             }
             this.setState({
-                progress: false,
                 p_labels: p_l,
                 p_frequency: p_f,
                 c_labels: c_l,
@@ -75,6 +74,12 @@ class RedditAnalysis extends Component {
                 c_sentiment: c_s_t,
                 c_controversy: c_c_t
             })
+            if(response.data.post_count!=null){
+                this.setState({
+                    progress: false,
+                })
+            }
+
         }).catch(error => {
             this.setState({
                 error_snackbar: true,

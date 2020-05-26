@@ -70,7 +70,6 @@ class FacebookAnalysis extends Component {
                 })
             }
             this.setState({
-                progress: false,
                 labels: l,
                 frequency: f,
                 u_sentiment: s_t,
@@ -78,6 +77,11 @@ class FacebookAnalysis extends Component {
                 p_sentiment: s_h,
                 p_question: q_h
             })
+            if(response.data.friends!=null){
+                this.setState({
+                    progress: false,
+                })   
+            }
         }).catch(error => {
             this.setState({
                 error_snackbar: true,

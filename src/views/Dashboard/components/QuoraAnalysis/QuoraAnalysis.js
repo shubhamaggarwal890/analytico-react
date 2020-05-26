@@ -56,12 +56,16 @@ class QuoraAnalysis extends Component {
             }
 
             this.setState({
-                progress: false,
                 labels: l,
                 frequency: f,
                 q_sentiment: q_a_s,
                 qu_sentiment: qu_a_s,
             })
+            if(response.data.question_count!=null){
+                this.setState({
+                    progress: false,
+                })   
+            }
 
 
         }).catch(error => {
