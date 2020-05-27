@@ -13,6 +13,7 @@ import {
   NotFound as NotFoundView,
   Quora as QuoraView,
   Reddit as RedditView,
+  SignIn as SignInView,
 } from './views';
 
 const Routes = () => {
@@ -21,8 +22,16 @@ const Routes = () => {
       <Redirect
         exact
         from="/"
-        to="/dashboard"
+        to="/signin"
       />
+
+      <RouteWithLayout
+        component={SignInView}
+        exact
+        layout={MinimalLayout}
+        path="/signin"
+      />
+
       <RouteWithLayout
         component={DashboardView}
         exact

@@ -87,6 +87,7 @@ class TwitterAnalysis extends Component {
                 this.setState({
                     following: response.data.following,
                     followers: response.data.followers,
+                    screen_name: response.data.screen_name,
                     tweets_count: response.data.tweets_count,
                     hashtags_count: response.data.hashtags_count,
                     progress: false,
@@ -246,7 +247,7 @@ class TwitterAnalysis extends Component {
                                     xl={3}
                                     xs={12}
                                 >
-                                    <Sentiments value={this.state.sentiment} title={"Sentiments on your timeline"} />
+                                    <Sentiments value={this.state.sentiment} title={"Sentiments on "+this.state.screen_name+" timeline"} />
 
                                 </Grid>
                                 : null
@@ -259,7 +260,7 @@ class TwitterAnalysis extends Component {
                                     xl={3}
                                     xs={12}
                                 >
-                                    <NQDoughnut value={this.state.news} title={"Fact Check on your timeline"} />
+                                    <NQDoughnut value={this.state.news} title={"Fact Check on "+this.state.screen_name+" timeline"} />
 
                                 </Grid>
                                 : null
@@ -273,7 +274,7 @@ class TwitterAnalysis extends Component {
                                     xl={3}
                                     xs={12}
                                 >
-                                    <NQDoughnut value={this.state.question} title={"Questions on your timeline"} />
+                                    <NQDoughnut value={this.state.question} title={"Questions on "+this.state.screen_name+" timeline"} />
 
                                 </Grid>
                                 : null

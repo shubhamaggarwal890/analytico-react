@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/styles';
 import { Avatar, Typography } from '@material-ui/core';
 import { deepPurple } from '@material-ui/core/colors';
+import { connect } from 'react-redux';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -32,7 +33,7 @@ const Profile = props => {
   const classes = useStyles();
 
   const user = {
-    name: 'Shubham Aggarwal',
+    name: props.name,
     avatar: '/images/avatars/avatar_11.png',
     bio: 'Analyzer'
   };
@@ -64,4 +65,11 @@ Profile.propTypes = {
   className: PropTypes.string
 };
 
-export default Profile;
+const mapStateToProps = state => {
+  return {
+      id: state.user.id,
+      name: state.user.name
+  };
+}
+
+export default  connect(mapStateToProps)(Profile);

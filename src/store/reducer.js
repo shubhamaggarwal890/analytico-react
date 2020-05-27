@@ -6,11 +6,12 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action) => {
-    if (action.type === 'activity_associated_flows') {
+    if (action.type === 'saveuser') {
         return {
             ...state,
-            associated_flows: {
-                activity: action.value
+            user: {
+                name: action.name,
+                id: action.id
             }
         }
     }
