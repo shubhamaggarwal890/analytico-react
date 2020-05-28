@@ -26,8 +26,10 @@ class Dashboard extends Component {
           spacing={4}
         >
           <ReportToolbar handleReportClick={this.handleReportClick} target={this.state.target} />
+	    <h1> Dashboard</h1>
         </Grid>
         {
+
           this.state.target === 'twitter'?<TAnalysis />:null
         }
         {
