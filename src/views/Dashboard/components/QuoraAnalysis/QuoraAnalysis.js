@@ -17,13 +17,24 @@ function Alert(props) {
 
 class QuoraAnalysis extends Component {
 
+    state = {
+        progress: true,
+        error_snackbar: false,
+        message: null,
+        query: null,
+        question: null,
+        questions_count: null,
+        answers_count: null,
+        labels: [],
+        frequency: [],
+        q_sentiment: [],
+        qu_sentiment: [],
+    }
 
-    constructor(props) {
-        super(props)
+    componentDidMount(){
         axios.post('/get_quora_analysis', {
             user_id: this.props.id,
         }).then(response => {
-            console.log(response);
             if (response.data.message) {
                 this.setState({
                     message: response.data.message,
@@ -74,20 +85,7 @@ class QuoraAnalysis extends Component {
                 message: "Oh No, You shouldn't have seen this. Some error occurred please try again."
             })
         })
-    }
 
-    state = {
-        progress: true,
-        error_snackbar: false,
-        message: null,
-        query: null,
-        question: null,
-        questions_count: null,
-        answers_count: null,
-        labels: [],
-        frequency: [],
-        q_sentiment: [],
-        qu_sentiment: [],
     }
 
     handleCloseSnackBar = () => {

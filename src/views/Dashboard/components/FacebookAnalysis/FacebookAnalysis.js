@@ -20,12 +20,28 @@ function Alert(props) {
 
 class FacebookAnalysis extends Component {
 
-    constructor(props) {
-        super(props)
+    state = {
+        progress: true,
+        error_snackbar: false,
+        message: null,
+        friends: null,
+        posts_count: null,
+        hashtags_count: null,
+        user_name: null,
+        page_name: null,
+        labels: [],
+        frequency: [],
+        u_sentiment: [],
+        u_question: [],
+        p_sentiment: [],
+        p_question: [],
+
+    }
+
+    componentDidMount(){
         axios.post('/get_facebook_analysis', {
             user_id: this.props.id,
         }).then(response => {
-            console.log(response.data)
             if (response.data.message) {
                 this.setState({
                     message: response.data.message,
@@ -88,23 +104,6 @@ class FacebookAnalysis extends Component {
                 message: "Oh No, You shouldn't have seen this. Some error occurred please try again."
             })
         })
-    }
-
-    state = {
-        progress: true,
-        error_snackbar: false,
-        message: null,
-        friends: null,
-        posts_count: null,
-        hashtags_count: null,
-        user_name: null,
-        page_name: null,
-        labels: [],
-        frequency: [],
-        u_sentiment: [],
-        u_question: [],
-        p_sentiment: [],
-        p_question: [],
 
     }
 

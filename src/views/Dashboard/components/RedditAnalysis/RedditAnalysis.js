@@ -19,12 +19,27 @@ function Alert(props) {
 
 class RedditAnalysis extends Component {
 
-    constructor(props) {
-        super(props)
+    state = {
+        progress: true,
+        error_snackbar: false,
+        message: null,
+        subreddit: null,
+        posts_count: null,
+        updown_counts: null,
+        comments_count: null,
+        p_labels: [],
+        p_frequency: [],
+        c_labels: [],
+        c_frequency: [],
+        p_sentiment: [],
+        c_sentiment: [],
+        c_controversy: []
+    }
+
+    componentDidMount(){
         axios.post('/get_reddit_analysis', {
             user_id: this.props.id,
         }).then(response => {
-            console.log(response);
             if (response.data.message) {
                 this.setState({
                     message: response.data.message,
@@ -87,23 +102,7 @@ class RedditAnalysis extends Component {
 
             })
         })
-    }
 
-    state = {
-        progress: true,
-        error_snackbar: false,
-        message: null,
-        subreddit: null,
-        posts_count: null,
-        updown_counts: null,
-        comments_count: null,
-        p_labels: [],
-        p_frequency: [],
-        c_labels: [],
-        c_frequency: [],
-        p_sentiment: [],
-        c_sentiment: [],
-        c_controversy: []
     }
 
     handleCloseSnackBar = () => {

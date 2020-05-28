@@ -22,12 +22,29 @@ function Alert(props) {
 
 class TwitterAnalysis extends Component {
 
-    constructor(props) {
-        super(props)
+    state = {
+        progress: true,
+        error_snackbar: false,
+        message: null,
+        following: null,
+        followers: null,
+        tweets_count: null,
+        hashtags_count: null,
+        labels: [],
+        frequency: [],
+        sentiment: [],
+        news: [],
+        question: [],
+        h_sentiment: [],
+        h_news: [],
+        h_question: [],
+        h_name: null
+    }
+
+    componentDidMount(){
         axios.post('/get_twitter_analysis', {
             user_id: this.props.id,
         }).then(response => {
-            console.log(response.data);
             if (response.data.message) {
                 this.setState({
                     message: response.data.message,
@@ -100,18 +117,6 @@ class TwitterAnalysis extends Component {
                     h_news: n_h,
                     h_question: q_h
                 })
-                console.log({
-                    following: response.data.following,
-                    followers: response.data.followers,
-                    tweets_count: response.data.tweets_count,
-                    hashtags_count: response.data.hashtags_count,
-                    progress: false,
-                    labels: l,
-                    frequency: f,
-                    sentiment: s_t,
-                    news: n_t,
-                    question: q_t
-                });
             }
         }).catch(error => {
             this.setState({
@@ -119,25 +124,7 @@ class TwitterAnalysis extends Component {
                 message: "Oh No, You shouldn't have seen this. Some error occurred please try again."
             })
         })
-    }
 
-    state = {
-        progress: true,
-        error_snackbar: false,
-        message: null,
-        following: null,
-        followers: null,
-        tweets_count: null,
-        hashtags_count: null,
-        labels: [],
-        frequency: [],
-        sentiment: [],
-        news: [],
-        question: [],
-        h_sentiment: [],
-        h_news: [],
-        h_question: [],
-        h_name: null
     }
 
     handleCloseSnackBar = () => {
